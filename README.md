@@ -20,7 +20,7 @@ file: C:/Users/roggc/dev/waku/essay/src/components/say-hello.tsx
   watchFiles: [...]
 ```
 
-This is the code on the ``node_modules/waku/dist/lib/plugins/vite-plugin-rsc-transform.js` where the exception is thrown:
+This is the code on the `node_modules/waku/dist/lib/plugins/vite-plugin-rsc-transform.js` where the exception is thrown:
 
 ```javascript
 //...
