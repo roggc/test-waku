@@ -41,3 +41,31 @@ export function rscTransformPlugin(opts) {
     };
     //...
 ```
+
+A workaround or solution to this problem has been found. The solution is to import and use the client component returned by server action in a server component, like this:
+
+```typescript
+import type { ReactNode } from "react";
+import SayHello from "../components/say-hello"; // 1. import the client component returned by server action
+
+type RootLayoutProps = { children: ReactNode };
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const data = await getData();
+
+  return (
+    <div className="font-['Nunito']">
+      <meta name="description" content={data.description} />
+      <link rel="icon" type="image/png" href={data.icon} />
+      <main className="m-6 flex items-center *:min-h-64 *:min-w-64 lg:m-0 lg:min-h-svh lg:justify-center">
+        {children}
+      </main>
+      {/* 2. use like this the component in the layout to fix deploy/build error */}
+      {false && <SayHello />}
+    </div>
+  );
+}
+// ...
+```
+
+This does not affect functionality of the app and fix the deploy/build error.

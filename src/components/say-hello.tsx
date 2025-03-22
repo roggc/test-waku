@@ -3,7 +3,7 @@
 
 import SuspenseWithUse from "./suspense-with-use";
 
-export default function SayHello({ promise }: { promise: Promise<string[]> }) {
+export default function SayHello({ promise }: { promise?: Promise<string[]> }) {
   return (
     <>
       <div>hey</div>
