@@ -1,6 +1,6 @@
 # Waku project
 
-This waku project is a use case where a server action is called from a client component and returns either a client component or a server component. In both cases the app works in local, but when the server action returns a client component the app fails on build/deploy, whereas when the server action returns a server component, the app doesn't fail on build/deploy.
+This Waku project is a use case where a server action is called from a client component and returns either a client component or a server component. In both cases the app works in local, but when the server action returns a client component the app fails on build/deploy, whereas when the server action returns a server component, the app doesn't fail on build/deploy.
 
 This is the error when fails on deploy (either command `npm run build -- --with-netlify`, `vercel`, or `npx waku build`)
 
@@ -69,3 +69,46 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 ```
 
 This does not affect functionality of the app and fix the deploy/build error.
+
+## Alternative approach
+
+Instead of the Server Action return a Client Component, we can make the Server Action return directly a promise and render the Client Component directly on the tree:
+
+```typescript
+//src/components/home-page-client-revisited.tsx
+"use client";
+
+import { sayHelloRevisited } from "../server-actions/say-hello-revisited";
+import { useState, useEffect } from "react";
+import SayHello from "./say-hello";
+
+export default function HomePageClientRevisited() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient ? <SayHello promise={sayHelloRevisited()} /> : null;
+}
+```
+
+This works and doesn't require the workaround for build/deploy used when the Server Action returns a Client Component. But is a more unstable solution, because ocasional additional errors appears on the browser console, despite working:
+
+```
+POST http://localhost:3000/RSC/F/C:/Users/roggc/dev/waku/essay/src/server-actions/say-hello-revisited.tsx/sayHelloRevisited.txt 500 (Internal Server Error)
+```
+
+and
+
+```
+Uncaught (in promise) Error: Fail on data fetching
+    at createCustomError (custom-errors.js?v=0ae991ef:16:17)
+    at checkStatus (client.js?v=0ae991ef:26:21)
+```
+
+This has to do with the caveat found in the React documentation regarding `use` function:
+
+```
+Prefer creating Promises in Server Components and passing them to Client Components over creating Promises in Client Components. Promises created in Client Components are recreated on every render. Promises passed from a Server Component to a Client Component are stable across re-renders.
+```

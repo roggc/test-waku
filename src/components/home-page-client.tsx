@@ -2,7 +2,8 @@
 "use client";
 
 import { sayHello } from "../server-actions/say-hello";
-import { Suspense, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { EnhancedSuspense } from "react-enhanced-suspense";
 
 export default function HomePageClient() {
   const [isClient, setIsClient] = useState(false);
@@ -11,7 +12,5 @@ export default function HomePageClient() {
     setIsClient(true);
   }, []);
 
-  return isClient ? (
-    <Suspense fallback="loading...">{sayHello()}</Suspense>
-  ) : null;
+  return isClient ? <EnhancedSuspense>{sayHello()}</EnhancedSuspense> : null;
 }
