@@ -1,6 +1,6 @@
 # Waku project
 
-This Waku project is a use case where a server action is called from a client component and returns either a client component or a server component. In both cases the app works in local, but when the server action returns a client component the app fails on build/deploy, whereas when the server action returns a server component, the app doesn't fail on build/deploy.
+This Waku project is a use case where a server action is called from a client component and returns either a client component or a server component. In both cases the app works in local, but when the server action returns a client component the app fails on build/deploy (`waku version 0.21.23`), whereas when the server action returns a server component, the app doesn't fail on build/deploy.
 
 This is the error when fails on deploy (either command `npm run build -- --with-netlify`, `vercel`, or `npx waku build`)
 
@@ -42,7 +42,7 @@ export function rscTransformPlugin(opts) {
     //...
 ```
 
-A workaround or solution to this problem has been found. The solution is to import and use the client component returned by server action in a server component, like this:
+A workaround or solution to this problem has been found (for those using `waku` version `0.21.23`). The solution is to import and use the client component returned by server action in a server component, like this:
 
 ```typescript
 import type { ReactNode } from "react";
@@ -69,6 +69,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 ```
 
 This does not affect functionality of the app and fix the deploy/build error.
+
+**The author of the framework has fixed the issue and hence this workaround will be no more necessary in the future. `v0.21.23` fails and needs the workaround. Until the fix it is not published, you can do `npm i https://pkg.csb.dev/wakujs/waku/commit/3017bed9/waku` in a Waku project to use a `waku` version with the fix.**
 
 ## Alternative approach
 

@@ -1,7 +1,7 @@
 import "../styles.css";
 
 import type { ReactNode } from "react";
-import SayHello from "../components/say-hello"; // 1. import the client component returned by server action
+// import SayHello from "../components/say-hello"; // 1. import the client component returned by server action
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -16,7 +16,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         {children}
       </main>
       {/* 2. use like this the component in the layout to fix deploy/build error */}
-      {false && <SayHello />}
+      {/* {false && <SayHello />} */}
     </div>
   );
 }

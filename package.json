@@ -13,7 +13,7 @@
     "react-dom": "19.0.0",
     "react-enhanced-suspense": "^1.0.2",
     "react-server-dom-webpack": "19.0.0",
-    "waku": "0.21.23"
+    "waku": "https://pkg.csb.dev/wakujs/waku/commit/3017bed9/waku"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.0.12",
